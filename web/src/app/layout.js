@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
 	title: "Corrosion Language Documentation",
-	description: "Documentation and usage for the Corrosion language",
+	description: "Documentation and usage for the Corrosion Language"
 };
 
 export default function RootLayout({ children }) {
