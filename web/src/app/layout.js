@@ -1,6 +1,12 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import Navbar from "@/components/navbar/Navbar.jsx";
+import Navbar from "@/components/navbar/Navbar.jsx"; 
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
+
+// add font awesome here
+// js-craft.io/blog/using-font-awesome-icons-with-the-nextjs-app-folder
 
 const inter = Inter({ subsets: ["latin"] });
 
