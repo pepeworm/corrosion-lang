@@ -34,10 +34,9 @@ export default function Sidebar(props) {
                                                 className={`${(linkIdx % 2) && linkIdx < titleLinks.length - 1 ? "my-1.5" : ""}`}
                                             >
                                                 <Link
-                                                    href={linkHref}
+                                                    href={"/docs" + linkHref}
                                                     className={`${active ? "link border-l-2 border-text-highlight" : "text-text-footer"} pl-2.5`}
                                                     onClick={(e) => {
-                                                        e.preventDefault();
                                                         let sectionCpy = {...sections};
                                                         for (const header in sections) {
                                                             for (let i = 0; i < sections[header].length; i++) {
