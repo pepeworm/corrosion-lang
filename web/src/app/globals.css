@@ -1,27 +1,75 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-	--foreground-rgb: 0, 0, 0;
-	--background-start-rgb: 214, 219, 220;
-	--background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--foreground-rgb: 255, 255, 255;
-		--background-start-rgb: 0, 0, 0;
-		--background-end-rgb: 0, 0, 0;
-	}
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-	color: rgb(var(--foreground-rgb));
-	background: linear-gradient(
-			to bottom,
-			transparent,
-			rgb(var(--background-end-rgb))
-		)
-		rgb(var(--background-start-rgb));
+  background-color: #111d25;
 }
+
+p {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.gradient {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  --tw-gradient-from: #7ad367 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(122 211 103 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: rgb(174 243 158 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #aef39e var(--tw-gradient-via-position), var(--tw-gradient-to);
+  --tw-gradient-to: #7dd3fc var(--tw-gradient-to-position);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+
+a.link {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  --tw-gradient-from: #7ad367 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(122 211 103 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: rgb(174 243 158 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #aef39e var(--tw-gradient-via-position), var(--tw-gradient-to);
+  --tw-gradient-to: #7dd3fc var(--tw-gradient-to-position);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+a.animate-underline {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+a.animate-underline .text-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #aef39e;
+  transform: scaleX(0);
+  opacity: 0;
+  transition: transform 200ms ease-out, opacity 200ms ease-out;
+}
+a.animate-underline:hover .text-underline {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.header {
+  font-size: 3.75rem;
+  font-weight: 700;
+}
+
+.fade {
+  opacity: 1;
+  transition: opacity 200ms ease-out;
+}
+.fade:hover {
+  opacity: 0.7;
+}/*# sourceMappingURL=globals.css.map */
