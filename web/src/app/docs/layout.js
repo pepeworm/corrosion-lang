@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Sidebar from "@/components/sidebar/Sidebar.jsx";
 
 export default function DocLayout({ children }) {
@@ -40,6 +40,7 @@ export default function DocLayout({ children }) {
 						sections={sidebarLinks}
 						setSections={setSidebarLinks}
 					/>
+					
 					{children}
 				</section>
 			</div>

@@ -7,10 +7,12 @@ $text-highlight: #7ad367;
 $text-header: #ffffffe6;
 $text-body: #ffffff99;
 $text-footer: #98a3b3;
+$text-dangerous: #f87171;
 $bg-primary: #111d25;
 $bg-secondary: #1c2830;
 $bg-tertiary: #202c34;
 $border: #ffffff0d;
+$black: #000;
 
 @mixin text-gradient() {
     background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
@@ -47,11 +49,24 @@ p {
     border: 0.3rem solid rgba(0, 0, 0, 0);
     background-clip: padding-box;
     border-radius: 9999px;
-    background-color: rgba($grey-1, 0.5);
+    background-color: rgba($text-footer, 0.5);
 }
 
 ::-webkit-scrollbar-track {
-    background-color: rgba($dark-2, 0.5);
+    background-color: rgba($bg-secondary, 0.5);
+}
+
+dialog {
+    opacity: 0;
+    scale: 0;
+    display: block;
+    transition: scale 200ms ease-out, opacity 200ms ease-out;
+
+    &[open] {
+        opacity: 1;
+        scale: 1;
+        box-shadow: 0px 0px 0px 100vw rgba($black, 0.8);
+    }
 }
 
 .gradient {

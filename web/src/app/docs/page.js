@@ -1,8 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import Sidebar from "@/components/sidebar/Sidebar.jsx";
-
 export default function Home() {
 	return (
 		<section className="pt-20">
