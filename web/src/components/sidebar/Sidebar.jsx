@@ -5,7 +5,7 @@ export default function Sidebar(props) {
     const { sections, setSections } = props;
 
     return (
-        <nav className="px-8 py-6 overflow-y-scroll absolute h-[calc(100vh-55.375px)] left-0 top-0 bottom-0 border-r border-border text-text-header">
+        <nav className="px-12 pr-16 py-6 overflow-y-scroll absolute h-[calc(100vh-55.375px)] left-0 top-0 bottom-0 border-r border-border text-text-header">
             <div className="mb-6">
                 <Searchbar isOpened={false} />
             </div>
