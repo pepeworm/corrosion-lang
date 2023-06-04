@@ -40,10 +40,7 @@ export default function DocLayout({ children }) {
 						sections={sidebarLinks}
 						setSections={setSidebarLinks}
 					/>
-
-					<SectionsContext.Provider value={sidebarLinks}>
-						{children}
-					</SectionsContext.Provider>
+					{children}
 				</section>
 			</div>
 		</main>
