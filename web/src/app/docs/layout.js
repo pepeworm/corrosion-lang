@@ -6,7 +6,7 @@ import Sidebar from "@/components/sidebar/Sidebar.jsx";
 export default function DocLayout({ children }) {
 	const [sidebarLinks, setSidebarLinks] = useState({
 		"Getting Started": [
-			["doc I", "/doc1", true], // title of docs page, link, active
+			["doc I", "/Introduction", true], // title of docs page, link, active
 			["doc II", "/doc2", false],
 			["doc III", "/doc3", false],
 		],
