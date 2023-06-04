@@ -41,41 +41,46 @@ export default function SearchModal(props) {
 				/>
 
 				<div className="text-center text-text-body mt-4 border border-border px-6 py-4 bg-bg-tertiary">
-					{Object.keys(searchResults).map((results, searchIdx) => {
-						return (
-							<div key={searchIdx}>
-								<h3 className="font-bold text-text-header text-lg">
-									{results}
-								</h3>
+					{Object.keys(searchResults).length ? (
+						Object.keys(searchResults).map((results, searchIdx) => {
+							return (
+								<div key={searchIdx}>
+									<h3 className="font-bold text-text-header text-lg">
+										{results}
+									</h3>
 
-								<div className="flex flex-col justify-center items-center">
-									{searchResults[results].map(
-										(result, resIdx) => {
-											const adjResIdx =
-												searchIdx + resIdx;
-											const title = result[0];
-											const link = result[1];
+									<div className="flex flex-col justify-center items-center">
+										{searchResults[results].map(
+											(result, resIdx) => {
+												const adjResIdx =
+													searchIdx + resIdx;
+												const title = result[0];
+												const link = result[1];
 
-											return (
-												<Link
-													key={adjResIdx}
-													href={link}
-													className="mt-2 transition-colors duration-200 hover:text-text-header"
-												>
-													{title}
-												</Link>
-											);
-										}
+												return (
+													<Link
+														key={adjResIdx}
+														href={link}
+														className="mt-2 transition-colors duration-200 hover:text-text-header"
+													>
+														{title}
+													</Link>
+												);
+											}
+										)}
+									</div>
+
+									{searchIdx <
+										Object.keys(searchResults).length -
+											1 && (
+										<hr className="my-4 border-b border-border" />
 									)}
 								</div>
-
-								{searchIdx <
-									Object.keys(searchResults).length - 1 && (
-									<hr className="my-4 border-b border-border" />
-								)}
-							</div>
-						);
-					})}
+							);
+						})
+					) : (
+						<h3>No Results</h3>
+					)}
 				</div>
 			</div>
 		</dialog>

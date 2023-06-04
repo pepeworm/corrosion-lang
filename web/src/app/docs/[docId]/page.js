@@ -1,24 +1,29 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import ReactMarkdown from "react-markdown"; //and now it breaks if i try to import this
+import { usePathname } from "next/navigation";
+import ReactMarkdown from "react-markdown";
 
-export default function Home(props) {
-	const { params } = props;
+export default function Home() {
+	const url = usePathname();
+	const currPage = url.match(/([^\/]*)$/)[1];
 
-	const mdPath = `@/markdown/${params.docId}.md`;
-	const [content, setContent] = useState("### Loading...");
+	const [content, setContent] = useState();
 
-	// useEffect(() => {
-	// 	fetch(mdPath)
-	// 		.then((res) => res.text())
-	// 		.then((text) => setContent(text));
-	// }, []);
+	useEffect(() => {
+		const mdPath = `@/data/docs/${currPage}.md`;
+
+		fetch(mdPath)
+			.then((res) => res.text())
+			.then((text) => setContent(text));
+	}, []);
 
 	return (
-		<section className="pt-20">
-			<div className="text-center">
-				<h1 className="gradient header">{content}</h1>
+		<section className="pt-14 pl-[20.5rem]">
+			<div className="text-left ml-16">
+				<ReactMarkdown source />
+				{/* <h1 className="gradient header">{content}</h1> */}
+				{/* <h1 className="header">A C-like Language with Fragments of Rust</h1> */}
 			</div>
 		</section>
 	);
