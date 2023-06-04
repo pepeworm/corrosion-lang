@@ -9,7 +9,7 @@ export default function Sidebar(props) {
 	const [modalState, setModalState] = useState(false);
 
 	return (
-		<nav className="px-12 pr-16 py-6 overflow-y-scroll absolute h-[calc(100vh-55.375px)] left-0 top-0 bottom-0 border-r border-border text-text-header">
+		<nav className="min-w-[20rem] px-12 pr-16 py-6 overflow-y-scroll absolute h-[calc(100vh-55.375px)] left-0 top-0 bottom-0 border-r border-border text-text-header">
 			<SearchModal modalState={modalState} setModalState={setModalState} />
 
 			<div className="mb-6">

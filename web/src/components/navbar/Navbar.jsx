@@ -10,7 +10,7 @@ export default function Navbar() {
     const [github, setGithub] = useState(false);
 	return (
         <>
-            <nav className="px-12 py-2 flex flex-row justify-between bg-[#0D161C] border-b-[2px] items-center  border-border text-text-header">
+            <nav className="px-12 py-2 flex flex-row justify-between border-b items-center border-border text-text-header">
                 <div>
                     <Link href="/" className="flex flex-row justify-center items-center gap-[0.1rem]">
                         <Image

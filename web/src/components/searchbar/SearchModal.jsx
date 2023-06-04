@@ -22,7 +22,7 @@ export default function SearchModal(props) {
 	return (
 		<dialog
 			open={modalState ? true : false}
-			className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2/5 bg-bg-secondary px-6 py-4 border border-border rounded"
+			className="z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2/5 bg-bg-secondary px-6 py-4 border border-border rounded"
 		>
 			<div className="relative pt-8">
 				<FontAwesomeIcon

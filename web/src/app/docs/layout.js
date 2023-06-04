@@ -40,9 +40,9 @@ export default function DocLayout({ children }) {
 						sections={sidebarLinks}
 						setSections={setSidebarLinks}
 					/>
-					
-					{children}
 				</section>
+
+				<section className="relative">{children}</section>
 			</div>
 		</main>
 	);
