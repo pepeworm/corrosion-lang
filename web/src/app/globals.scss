@@ -45,7 +45,7 @@ p {
 
 hr {
     border: none;
-    border-bottom: 1px solid $border;   
+    border-bottom: 1px solid $border;
 }
 
 ::-webkit-scrollbar {
@@ -84,7 +84,8 @@ dialog {
         font-weight: 700;
     }
 
-    a, p {
+    a,
+    p {
         font-size: 1rem;
     }
 

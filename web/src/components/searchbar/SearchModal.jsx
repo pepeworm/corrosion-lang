@@ -14,8 +14,8 @@ export default function SearchModal(props) {
 	useEffect(() => {}, [search]);
 	useEffect(() => {
 		fetch("/data/docs.json")
-			.then(res => res.json())
-			.then(text => setSearchResults(text))
+			.then((res) => res.json())
+			.then((text) => setSearchResults(text));
 	}, []);
 
 	function closeModal() {
@@ -25,7 +25,7 @@ export default function SearchModal(props) {
 	return (
 		<dialog
 			open={modalState ? true : false}
-			className="z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/5 bg-bg-secondary px-6 py-4 border border-border rounded"
+			className="z-50 overscroll-contain fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/5 bg-bg-secondary px-6 py-4 border border-border rounded"
 		>
 			<div className="relative pt-8">
 				<FontAwesomeIcon
@@ -38,12 +38,12 @@ export default function SearchModal(props) {
 
 				<Searchbar placeholder="Search" fullWidth={true} searchInput={search} setSearchInput={setSearch} />
 
-				<div className="overflow-y-scroll max-h-[65vh] text-center rounded text-text-body mt-4 border border-border px-6 pb-6 bg-bg-secondary">
+				<div className="overflow-y-scroll max-h-[55vh] text-center rounded text-text-body mt-4 border border-border px-6 pb-6 bg-bg-tertiary">
 					{searchResults && Object.keys(searchResults).length ? (
 						Object.keys(searchResults).map((results, searchIdx) => {
 							return (
 								<div key={searchIdx}>
-									<h3 className="text-text-header font-bold text-left mt-4">{results}</h3>
+									<h3 className="text-text-header text-lg font-bold text-left mt-4">{results}</h3>
 
 									<div className="flex flex-col justify-center items-start">
 										{searchResults[results].map((result, resIdx) => {
@@ -65,13 +65,13 @@ export default function SearchModal(props) {
 																sectionCpy[header][i][2] = false;
 															}
 														}
-														
+
 														sectionCpy[results][resIdx][2] = true;
 
 														setSections(sectionCpy);
 														closeModal();
 													}}
-													className="border border-border px-4 py-2 rounded flex flex-row justify-between items-center w-full mt-4 transition-colors duration-200 hover:text-text-header hover:bg-bg-tertiary"
+													className="border  border-border px-4 py-2 rounded flex flex-row justify-between items-center w-full mt-4 transition-colors duration-200 hover:text-text-header hover:bg-bg-primary"
 												>
 													{title}
 

@@ -64,7 +64,8 @@ dialog[open] {
   font-size: 3.75rem;
   font-weight: 700;
 }
-.markdown a, .markdown p {
+.markdown a,
+.markdown p {
   font-size: 1rem;
 }
 .markdown a {
