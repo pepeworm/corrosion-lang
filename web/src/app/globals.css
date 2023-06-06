@@ -10,10 +10,16 @@
 body {
   background-color: #111d25;
   overflow-x: hidden;
+  padding-top: 55.375px;
 }
 
 p {
   color: rgba(255, 255, 255, 0.6);
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.0509803922);
 }
 
 ::-webkit-scrollbar {
@@ -42,6 +48,30 @@ dialog[open] {
   opacity: 1;
   scale: 1;
   box-shadow: 0px 0px 0px 100vw rgba(0, 0, 0, 0.8);
+}
+
+.markdown h1 {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  --tw-gradient-from: #7ad367 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(122 211 103 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: rgb(174 243 158 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #aef39e var(--tw-gradient-via-position), var(--tw-gradient-to);
+  --tw-gradient-to: #7dd3fc var(--tw-gradient-to-position);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  font-size: 3.75rem;
+  font-weight: 700;
+}
+.markdown a, .markdown p {
+  font-size: 1rem;
+}
+.markdown a {
+  color: #2c89e0;
+}
+.markdown p {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .gradient {

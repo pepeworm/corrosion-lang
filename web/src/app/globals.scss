@@ -13,6 +13,7 @@ $bg-secondary: #1c2830;
 $bg-tertiary: #202c34;
 $border: #ffffff0d;
 $black: #000;
+$blue: #2c89e0;
 
 @mixin text-gradient() {
     background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
@@ -35,10 +36,16 @@ $black: #000;
 body {
     background-color: $bg-primary;
     overflow-x: hidden;
+    padding-top: 55.375px;
 }
 
 p {
     color: $text-body;
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid $border;   
 }
 
 ::-webkit-scrollbar {
@@ -67,6 +74,26 @@ dialog {
         opacity: 1;
         scale: 1;
         box-shadow: 0px 0px 0px 100vw rgba($black, 0.8);
+    }
+}
+
+.markdown {
+    h1 {
+        @include text-gradient();
+        font-size: 3.75rem;
+        font-weight: 700;
+    }
+
+    a, p {
+        font-size: 1rem;
+    }
+
+    a {
+        color: $blue;
+    }
+
+    p {
+        color: $text-body;
     }
 }
 

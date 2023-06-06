@@ -5,9 +5,6 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 
-// add font awesome here
-// js-craft.io/blog/using-font-awesome-icons-with-the-nextjs-app-folder
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
