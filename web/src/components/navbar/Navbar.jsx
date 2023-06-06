@@ -36,7 +36,7 @@ export default function Navbar() {
 						</li>
 						<li>
 							<Link
-								href="/docs"
+								href="/docs/installation"
 								className="link animate-underline"
 							>
 								Docs

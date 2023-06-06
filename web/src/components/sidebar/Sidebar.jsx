@@ -10,7 +10,7 @@ export default function Sidebar(props) {
 
 	return (
 		<nav className="z-40 min-w-[20rem] px-12 pr-16 py-6 overflow-y-scroll fixed h-full left-0 top-[55.375px] bottom-0 border-r border-border text-text-header">
-			<SearchModal modalState={modalState} setModalState={setModalState} />
+			<SearchModal modalState={modalState} setModalState={setModalState} sections={sections} setSections={setSections}/>
 
 			<div className="mb-6">
 				<div

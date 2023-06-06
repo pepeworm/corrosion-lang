@@ -6,18 +6,17 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function SearchModal(props) {
-	let { modalState, setModalState } = props;
+	let { modalState, setModalState, sections, setSections } = props;
 
 	const [search, setSearch] = useState("");
-	const [searchResults, setSearchResults] = useState({
-		Installation: [
-			["Getting Started", "/docs/getting-started"],
-			["Syntax Highlighting", "/docs/syntax-highlighting"],
-		],
-		Syntax: [["Basic Syntax", "/docs/basic-syntax"]],
-	});
+	const [searchResults, setSearchResults] = useState(false);
 
 	useEffect(() => {}, [search]);
+	useEffect(() => {
+		fetch("/data/docs.json")
+			.then(res => res.json())
+			.then(text => setSearchResults(text))
+	}, []);
 
 	function closeModal() {
 		setModalState((prev) => !prev);
@@ -39,12 +38,12 @@ export default function SearchModal(props) {
 
 				<Searchbar placeholder="Search" fullWidth={true} searchInput={search} setSearchInput={setSearch} />
 
-				<div className="text-center rounded text-text-body mt-4 border border-border px-6 pb-6 bg-bg-secondary">
-					{Object.keys(searchResults).length ? (
+				<div className="overflow-y-scroll max-h-[65vh] text-center rounded text-text-body mt-4 border border-border px-6 pb-6 bg-bg-secondary">
+					{searchResults && Object.keys(searchResults).length ? (
 						Object.keys(searchResults).map((results, searchIdx) => {
 							return (
 								<div key={searchIdx}>
-									<h3 className="text-text-body text-left mt-4">{results}</h3>
+									<h3 className="text-text-header font-bold text-left mt-4">{results}</h3>
 
 									<div className="flex flex-col justify-center items-start">
 										{searchResults[results].map((result, resIdx) => {
@@ -55,7 +54,23 @@ export default function SearchModal(props) {
 											return (
 												<Link
 													key={adjResIdx}
-													href={link}
+													href={"/docs" + link}
+													onClick={(e) => {
+														let sectionCpy = {
+															...sections,
+														};
+
+														for (const header in sections) {
+															for (let i = 0; i < sections[header].length; i++) {
+																sectionCpy[header][i][2] = false;
+															}
+														}
+														
+														sectionCpy[results][resIdx][2] = true;
+
+														setSections(sectionCpy);
+														closeModal();
+													}}
 													className="border border-border px-4 py-2 rounded flex flex-row justify-between items-center w-full mt-4 transition-colors duration-200 hover:text-text-header hover:bg-bg-tertiary"
 												>
 													{title}
