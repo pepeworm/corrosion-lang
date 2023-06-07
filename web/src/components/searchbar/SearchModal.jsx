@@ -5,6 +5,47 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
+function genHeader(regx, size, header) {
+    if (header.match(regx)) {
+        let begin = header.match(regx).index;
+        return (
+            <div className="flex">
+                <h3 className="text-text-header text-lg font-bold text-left mt-4 whitespace-pre">
+                    {header.substr(0, begin)}
+                </h3>
+                <h3 className="text-transparent text-lg font-bold text-left mt-4 bg-clip-text bg-gradient-to-r from-green-500 to-cyan-200 whitespace-pre">
+                    {header.substr(begin, size)}
+                </h3>
+                <h3 className="text-text-header text-lg font-bold text-left mt-4 whitespace-pre">
+                    {header.substr(begin + size, header.length - begin - size)}
+                </h3>
+            </div>
+        );
+    }
+    return <h3 className="text-text-header text-lg font-bold text-left mt-4">{header}</h3>
+}
+
+function genIndiv(regx, size, indiv) {
+    if (indiv.match(regx)) {
+        let begin = indiv.match(regx).index;
+        console.log(begin);
+        return (
+            <div className="flex">
+                <h3 className="transition-colors duration-200 hover:text-text-header whitespace-pre">
+                    {indiv.substr(0, begin)}
+                </h3>
+                <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-cyan-200 whitespace-pre">
+                    {indiv.substr(begin, size)}
+                </h2>
+                <h3 className="transition-colors duration-200 hover:text-text-header whitespace-pre">
+                    {indiv.substr(begin + size, indiv.length - begin - size)}
+                </h3>
+            </div>
+        );
+    }
+    return <h3 className="transition-colors duration-200 hover:text-text-header whitespace-pre">{indiv}</h3>
+}
+
 export default function SearchModal(props) {
 	let { modalState, setModalState, sections, setSections } = props;
 
@@ -46,16 +87,18 @@ export default function SearchModal(props) {
 
                     <div className="overflow-y-scroll max-h-[55vh] text-center rounded text-text-body mt-2 mb-4 border border-border px-6 pb-6 bg-bg-tertiary">
                         {searchResults && Object.keys(searchResults).length ? (
-                            Object.keys(searchResults).map((results, searchIdx) => {
+                            Object.keys(searchResults).map((curHeader, curHeaderIdx) => {
                                 return (
-                                    <div key={searchIdx}>
-                                        <h3 className="text-text-header text-lg font-bold text-left mt-4">{results}</h3>
+                                    <div key={curHeaderIdx}>
+
+                                        {/*highlighting header*/}
+                                        {genHeader(new RegExp(search, "i"), search.length, curHeader)}
 
                                         <div className="flex flex-col justify-center items-start">
-                                            {searchResults[results].map((result, resIdx) => {
-                                                const adjResIdx = searchIdx + resIdx;
-                                                const title = result[0];
-                                                const link = result[1];
+                                            {searchResults[curHeader].map((indiv, indivIdx) => {
+                                                const adjResIdx = curHeaderIdx + indivIdx;
+                                                const title = indiv[0];
+                                                const link = indiv[1];
 
                                                 return (
                                                     <Link
@@ -72,14 +115,15 @@ export default function SearchModal(props) {
                                                                 }
                                                             }
 
-                                                            sectionCpy[results][resIdx][2] = true;
+                                                            sectionCpy[curHeader][indivIdx][2] = true;
 
                                                             setSections(sectionCpy);
                                                             closeModal();
                                                         }}
-                                                        className="border  border-border px-4 py-2 rounded flex flex-row justify-between items-center w-full mt-4 transition-colors duration-200 hover:text-text-header hover:bg-bg-primary"
+                                                        className="border border-border px-4 py-2 rounded flex flex-row justify-between items-center w-full mt-4 hover:bg-bg-primary"
                                                     >
-                                                        {title}
+                                                        {/*highlighting title*/}
+                                                        {genIndiv(new RegExp(search, "i"), search.length, title)}
 
                                                         <FontAwesomeIcon icon={faArrowRight} className="text-green-400 " />
                                                     </Link>
@@ -87,7 +131,7 @@ export default function SearchModal(props) {
                                             })}
                                         </div>
 
-                                        {/* {searchIdx < Object.keys(searchResults).length - 1 && ( */}
+                                        {/* {curHeaderIdx < Object.keys(searchResults).length - 1 && ( */}
                                         {/* <hr className="mt-7 mb-4 border-b border-border" /> */}
                                         {/* )} */}
                                     </div>

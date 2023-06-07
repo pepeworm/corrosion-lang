@@ -23,7 +23,7 @@ export default function Searchbar(props) {
 					setSearchInput(e.target.value);
                     find = async() => {
                         let newRes = {};
-                        let regx = new RegExp(e.target.value);
+                        let regx = new RegExp(e.target.value, "i");
                         for (const header in allResults) {
 
                             //header matches
