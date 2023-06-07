@@ -25,7 +25,7 @@ export default function Sidebar(props) {
 							setModalState((prev) => !prev);
 						}}
 					>
-						<span className="px-3 py-1.5 border-r border-r-border">
+						<span className="px-3 py-1.5 border-r border-r-border sticky top-0">
 							<FontAwesomeIcon icon={faSearch} className="text-text-footer" />
 						</span>
 

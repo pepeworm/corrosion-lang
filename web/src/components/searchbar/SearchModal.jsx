@@ -9,13 +9,17 @@ export default function SearchModal(props) {
 	let { modalState, setModalState, sections, setSections } = props;
 
 	const [search, setSearch] = useState("");
+    const [allResults, setAllResults] = useState(false);
 	const [searchResults, setSearchResults] = useState(false);
 
 	useEffect(() => {}, [search]);
 	useEffect(() => {
 		fetch("/data/docs.json")
 			.then((res) => res.json())
-			.then((text) => setSearchResults(text));
+			.then((text) => {
+                setAllResults(text);
+                setSearchResults(text)
+            });
 	}, []);
 
 	function closeModal() {
@@ -24,7 +28,7 @@ export default function SearchModal(props) {
 
 	return (
         <>
-            {modalState && <div className="z-50 fixed left-0 right-0 bottom-0 top-0 bg-transparent" onClick={closeModal}/>}
+            {modalState && <div className="z-[50] fixed left-0 right-0 bottom-0 top-0 bg-transparent" onClick={closeModal}/>}
             <dialog
                 open={modalState ? true : false}
                 className="z-[60] overscroll-contain fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/5 bg-bg-secondary px-6 py-4 border border-border rounded"
@@ -38,7 +42,7 @@ export default function SearchModal(props) {
                         }}
                     />
 
-                    <Searchbar placeholder="Search" fullWidth={true} searchInput={search} setSearchInput={setSearch} />
+                    <Searchbar placeholder="Search" fullWidth={true} searchInput={search} setSearchInput={setSearch} allResults={allResults} setSearchResults={setSearchResults} />
 
                     <div className="overflow-y-scroll max-h-[55vh] text-center rounded text-text-body mt-2 mb-4 border border-border px-6 pb-6 bg-bg-tertiary">
                         {searchResults && Object.keys(searchResults).length ? (
