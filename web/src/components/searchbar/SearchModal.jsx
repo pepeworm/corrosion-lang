@@ -128,23 +128,19 @@ export default function SearchModal(props) {
 															setSections(sectionCpy);
 															closeModal();
 														}}
-														className="border border-border px-4 py-2 rounded flex flex-row justify-between items-center w-full mt-4 hover:bg-bg-primary"
+														className="border border-border px-4 py-2 rounded flex flex-row justify-between items-center w-full mt-4 transition-colors duration-200 hover:bg-bg-tertiary"
 													>
 														{/*highlighting title*/}
 														{genIndiv(new RegExp(search, "i"), search.length, title)}
 
 														<FontAwesomeIcon
 															icon={faArrowRight}
-															className="text-green-400 "
+															className="text-green-400"
 														/>
 													</Link>
 												);
 											})}
 										</div>
-
-										{/* {curHeaderIdx < Object.keys(searchResults).length - 1 && ( */}
-										{/* <hr className="mt-7 mb-4 border-b border-border" /> */}
-										{/* )} */}
 									</div>
 								);
 							})

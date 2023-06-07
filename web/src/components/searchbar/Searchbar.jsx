@@ -19,32 +19,32 @@ export default function Searchbar(props) {
 				placeholder={placeholder}
 				value={searchInput}
 				onChange={(e) => {
-                    e.preventDefault();
+					e.preventDefault();
 					setSearchInput(e.target.value);
-                    find = async() => {
-                        let newRes = {};
-                        let regx = new RegExp(e.target.value, "i");
-                        for (const header in allResults) {
+					find = async() => {
+						let newRes = {};
+						let regx = new RegExp(e.target.value, "i");
+						for (const header in allResults) {
 
-                            //header matches
-                            if (header.match(regx)) {
-                                newRes[header] = allResults[header];
-                                continue;
-                            }
+							//header matches
+							if (header.match(regx)) {
+								newRes[header] = allResults[header];
+								continue;
+							}
 
-                            //indiv section matches
-                            for (let i = 0; i < allResults[header].length; i++) {
-                                if (allResults[header][i][0].match(regx)) {
-                                    if (!newRes[header]) {
-                                        newRes[header] = [];
-                                    }
-                                    newRes[header].push(allResults[header][i]);
-                                }
-                            }
-                        }
-                        setSearchResults(newRes);
-                    }
-                    find();
+							//indiv section matches
+							for (let i = 0; i < allResults[header].length; i++) {
+								if (allResults[header][i][0].match(regx)) {
+									if (!newRes[header]) {
+										newRes[header] = [];
+									}
+									newRes[header].push(allResults[header][i]);
+								}
+							}
+						}
+						setSearchResults(newRes);
+					}
+					find();
 				}}
 			/>
 		</div>

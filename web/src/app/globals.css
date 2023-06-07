@@ -7,6 +7,10 @@
   margin: 0;
 }
 
+.preWhite {
+  white-space: pre;
+}
+
 body {
   background-color: #111d25;
   overflow-x: hidden;
@@ -49,6 +53,9 @@ dialog[open] {
   scale: 1;
   box-shadow: 0px 0px 0px 100vw rgba(0, 0, 0, 0.8);
 }
+dialog[open] ::-webkit-scrollbar {
+  border: none;
+}
 
 .markdown h1 {
   background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
@@ -64,6 +71,14 @@ dialog[open] {
   font-size: 3.75rem;
   font-weight: 700;
 }
+.markdown h2, .markdown h3 {
+  color: rgba(255, 255, 255, 0.9019607843);
+  margin-bottom: 0.7rem;
+}
+.markdown h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
 .markdown a,
 .markdown p {
   font-size: 1rem;
@@ -74,6 +89,28 @@ dialog[open] {
 .markdown p {
   color: rgba(255, 255, 255, 0.6);
 }
+.markdown hr {
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.0509803922);
+  margin: 0.7rem 0;
+}
+.markdown blockquote {
+  padding-left: 2rem;
+  border-left: 5px solid rgba(255, 255, 255, 0.0509803922);
+}
+.markdown strong {
+  color: rgb(222, 222, 222);
+}
+.markdown pre {
+  background-color: #1c2830;
+  border: 1px solid rgba(255, 255, 255, 0.0509803922);
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+}
+.markdown code {
+  color: #7ad367;
+}
 
 .gradient {
   background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
@@ -83,6 +120,13 @@ dialog[open] {
   --tw-gradient-to: rgb(174 243 158 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), #aef39e var(--tw-gradient-via-position), var(--tw-gradient-to);
   --tw-gradient-to: #7dd3fc var(--tw-gradient-to-position);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+
+.search-gradient {
+  background-image: linear-gradient(to bottom right, #7ad367, #7dd3fc);
   -webkit-background-clip: text;
           background-clip: text;
   color: transparent;
