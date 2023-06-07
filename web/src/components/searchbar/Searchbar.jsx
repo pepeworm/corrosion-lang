@@ -13,7 +13,7 @@ export default function Searchbar(props) {
 
 			<input
 				input="text"
-				className={`px-3 py-1.5 bg-transparent outline-none font-normal text-text-footer ${
+				className={`px-3 py-1.5 bg-transparent outline-none font-normal text-green-400 ${
 					fullWidth ? "w-full" : "w-[15rem]"
 				}`}
 				placeholder={placeholder}

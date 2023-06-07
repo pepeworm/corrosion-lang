@@ -27,6 +27,12 @@ $blue: #2c89e0;
     color: transparent;
 }
 
+@mixin search-gradient() {
+    background-image: linear-gradient(to bottom right, #7ad367, #7dd3fc);
+    background-clip: text;
+    color: transparent;
+}
+
 * {
     box-sizing: border-box;
     padding: 0;
@@ -100,6 +106,10 @@ dialog {
 
 .gradient {
     @include text-gradient();
+}
+
+.search-gradient {
+    @include search-gradient();
 }
 
 a {
