@@ -1,15 +1,19 @@
-import { signIn, useSession } from "next-auth/client";
+"use client";
+
+import { getCookie, hasCookie } from "cookies-next";
 
 export default function Home() {
-	const [session] = useSession();
+	if (!hasCookie("admin_id") || getCookie("admin_id") !== process.env.ADMIN_ID) {
+		window.location.href = "/";
 
-	{
-		session ? (
-			<div>
-			    wazzup
-			</div>
-		) : (
-			(window.location.href = "/admin")
-		);
+		return <></>;
 	}
+
+	return (
+		<section>
+			<form>
+				<p>Test</p>
+			</form>
+		</section>
+	);
 }

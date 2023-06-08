@@ -13,7 +13,7 @@ export default function Navbar() {
 		<>
 			<nav className="z-40 backdrop-blur-xl px-12 py-2 flex flex-row justify-between border-b items-center border-border text-text-header fixed top-0 right-0 left-0">
 				<div>
-					<Link href="/" className="flex flex-row justify-center items-center gap-[0.1rem]">
+					<Link href="/" className="flex flex-row justify-center items-center gap-[0.05rem]">
 						<Image src="/images/logo.png" width="35" height="35" />
 
 						<span className="font-bold text-xl">ORROSION</span>

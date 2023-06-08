@@ -1,16 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { setCookies } from "cookies-next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { faLock, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 export default function Home() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-
-	const [session] = useSession();
 
 	return (
 		<form
@@ -21,10 +19,8 @@ export default function Home() {
 				const password = e.target[1].value;
 
 				if (username == process.env.USERNAME && password == process.env.PASSWORD) {
-					// implement auth -> nextauth.js
-                    // currently erroring
+					setCookies("admin_id", process.env.ADMIN_ID, { maxAge: 60 * 60 * 48 });
 
-					signIn;
 					window.location.href = "/admin/panel";
 				}
 			}}
@@ -65,8 +61,15 @@ export default function Home() {
 					/>
 				</div>
 
-				<button className="gradient border border-border rounded px-3 py-1.5 w-full" type="submit">
-					Login
+				<button
+					className="group border border-border rounded px-3 py-1.5 w-full flex flex-row justify-between items-center"
+					type="submit"
+				>
+					<span className="text-text-body transition-colors duration-200 group-hover:text-text-header">
+						Login
+					</span>
+
+					<FontAwesomeIcon icon={faArrowRight} className="text-text-highlight" />
 				</button>
 			</div>
 		</form>
