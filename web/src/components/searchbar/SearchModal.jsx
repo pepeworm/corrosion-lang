@@ -5,45 +5,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
-function genHeader(regx, size, header) {
-	if (header.match(regx)) {
-		let begin = header.match(regx).index;
-		return (
-			<div className="flex">
-				<h3 className="text-text-header text-lg font-bold text-left mt-4 whitespace-pre">
-					{header.substr(0, begin)}
-				</h3>
-				<h3 className="text-transparent text-lg font-bold text-left mt-4 bg-clip-text bg-gradient-to-r from-green-500 to-cyan-200 whitespace-pre">
-					{header.substr(begin, size)}
-				</h3>
-				<h3 className="text-text-header text-lg font-bold text-left mt-4 whitespace-pre">
-					{header.substr(begin + size, header.length - begin - size)}
-				</h3>
-			</div>
-		);
-	}
-	return <h3 className="text-text-header text-lg font-bold text-left mt-4">{header}</h3>;
-}
+function getIndividual(regex, size, individual) {
+	if (individual.match(regex)) {
+		let begin = individual.match(regex).index;
 
-function genIndiv(regx, size, indiv) {
-	if (indiv.match(regx)) {
-		let begin = indiv.match(regx).index;
-		console.log(begin);
 		return (
-			<div className="flex">
-				<h3 className="transition-colors duration-200 hover:text-text-header whitespace-pre">
-					{indiv.substr(0, begin)}
-				</h3>
-				<h2 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-cyan-200 whitespace-pre">
-					{indiv.substr(begin, size)}
-				</h2>
-				<h3 className="transition-colors duration-200 hover:text-text-header whitespace-pre">
-					{indiv.substr(begin + size, indiv.length - begin - size)}
-				</h3>
+			<div className="group-hover:text-text-header flex">
+				<span className="transition-colors duration-200 whitespace-pre">{individual.substr(0, begin)}</span>
+				<span className="gradient font-bold whitespace-pre">{individual.substr(begin, size)}</span>
+				<span className="transition-colors duration-200 whitespace-pre">
+					{individual.substr(begin + size, individual.length - begin - size)}
+				</span>
 			</div>
 		);
 	}
-	return <h3 className="transition-colors duration-200 hover:text-text-header whitespace-pre">{indiv}</h3>;
+
+	return <h3 className="transition-colors duration-200 hover:text-text-header whitespace-pre">{individual}</h3>;
 }
 
 export default function SearchModal(props) {
@@ -99,14 +76,15 @@ export default function SearchModal(props) {
 							Object.keys(searchResults).map((curHeader, curHeaderIdx) => {
 								return (
 									<div key={curHeaderIdx}>
-										{/*highlighting header*/}
-										{genHeader(new RegExp(search, "i"), search.length, curHeader)}
+										<h3 className="text-text-header text-lg font-bold text-left mt-4">
+											{curHeader}
+										</h3>
 
 										<div className="flex flex-col justify-center items-start">
-											{searchResults[curHeader].map((indiv, indivIdx) => {
-												const adjResIdx = curHeaderIdx + indivIdx;
-												const title = indiv[0];
-												const link = indiv[1];
+											{searchResults[curHeader].map((individual, individualIdx) => {
+												const adjResIdx = curHeaderIdx + individualIdx;
+												const title = individual[0];
+												const link = individual[1];
 
 												return (
 													<Link
@@ -123,15 +101,14 @@ export default function SearchModal(props) {
 																}
 															}
 
-															sectionCpy[curHeader][indivIdx][2] = true;
+															sectionCpy[curHeader][individualIdx][2] = true;
 
 															setSections(sectionCpy);
 															closeModal();
 														}}
-														className="border border-border px-4 py-2 rounded flex flex-row justify-between items-center w-full mt-4 transition-colors duration-200 hover:bg-bg-tertiary"
+														className="group border border-border px-4 py-2 rounded flex flex-row justify-between items-center w-full mt-4 transition-colors duration-200 hover:bg-bg-tertiary"
 													>
-														{/*highlighting title*/}
-														{genIndiv(new RegExp(search, "i"), search.length, title)}
+														{getIndividual(new RegExp(search, "i"), search.length, title)}
 
 														<FontAwesomeIcon
 															icon={faArrowRight}

@@ -16,8 +16,8 @@ export default function Home() {
 	}, []);
 
 	return (
-		<section className="pt-14 pl-[20.5rem]">
-			<div className="text-left ml-[8rem] mr-[14rem]">
+		<section className="pt-14 pb-12 pl-[24.5rem] pr-20">
+			<div className="text-left">
 				<ReactMarkdown className="markdown" children={content} />
 			</div>
 		</section>

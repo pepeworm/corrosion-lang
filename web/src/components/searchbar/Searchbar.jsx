@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,7 +12,7 @@ export default function Searchbar(props) {
 
 			<input
 				input="text"
-				className={`px-3 py-1.5 bg-transparent outline-none font-normal text-green-400 ${
+				className={`px-3 py-1.5 bg-transparent outline-none font-normal text-text-body ${
 					fullWidth ? "w-full" : "w-[15rem]"
 				}`}
 				placeholder={placeholder}
@@ -21,29 +20,32 @@ export default function Searchbar(props) {
 				onChange={(e) => {
 					e.preventDefault();
 					setSearchInput(e.target.value);
-					find = async() => {
+					find = async () => {
 						let newRes = {};
-						let regx = new RegExp(e.target.value, "i");
+						let regex = new RegExp(e.target.value, "i");
 						for (const header in allResults) {
-
-							//header matches
-							if (header.match(regx)) {
+							// header matches
+							if (header.match(regex)) {
 								newRes[header] = allResults[header];
+
 								continue;
 							}
 
-							//indiv section matches
+							// individual section matches
 							for (let i = 0; i < allResults[header].length; i++) {
-								if (allResults[header][i][0].match(regx)) {
+								if (allResults[header][i][0].match(regex)) {
 									if (!newRes[header]) {
 										newRes[header] = [];
 									}
+
 									newRes[header].push(allResults[header][i]);
 								}
 							}
 						}
+
 						setSearchResults(newRes);
-					}
+					};
+
 					find();
 				}}
 			/>

@@ -27,26 +27,23 @@ $blue: #2c89e0;
 	color: transparent;
 }
 
-@mixin search-gradient() {
-	background-image: linear-gradient(to bottom right, #7ad367, #7dd3fc);
-	background-clip: text;
-	color: transparent;
-}
-
 * {
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
 }
 
-.preWhite { 
-	white-space: pre; 
-}
-
 body {
 	background-color: $bg-primary;
 	overflow-x: hidden;
-	padding-top: 55.375px;
+	padding-top: 51px;
+}
+
+h1 {
+	line-height: normal;
+	@include text-gradient();
+	font-size: 3.75rem;
+	font-weight: 700;
 }
 
 p {
@@ -79,29 +76,32 @@ dialog {
 	scale: 0;
 	display: block;
 	transition: scale 200ms ease-out, opacity 200ms ease-out;
-	
+
 	&[open] {
 		opacity: 1;
 		scale: 1;
 		box-shadow: 0px 0px 0px 100vw rgba($black, 0.8);
-		
+
 		::-webkit-scrollbar {
 			border: none;
 		}
-	}	
-}	
-
+	}
+}
 
 .markdown {
-	h1 {
-		@include text-gradient();
-		font-size: 3.75rem;
-		font-weight: 700;
+	h2,
+	h3,
+	strong {
+		color: $text-header;
 	}
 
-	h2, h3 {
-		color: $text-header;
+	h2,
+	h3 {
 		margin-bottom: 0.7rem;
+	}
+
+	h1 {
+		margin-top: 0.5rem;
 	}
 
 	h2 {
@@ -123,18 +123,13 @@ dialog {
 	}
 
 	hr {
-		border: none;
 		border-bottom: 2px solid $border;
-		margin: 0.7rem 0;
+		margin: 1rem 0 0.4rem;
 	}
 
 	blockquote {
 		padding-left: 2rem;
 		border-left: 5px solid $border;
-	}
-
-	strong {
-		color: rgb(222, 222, 222);
 	}
 
 	pre {
@@ -152,10 +147,6 @@ dialog {
 
 .gradient {
 	@include text-gradient();
-}
-
-.search-gradient {
-	@include search-gradient();
 }
 
 a {

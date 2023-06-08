@@ -17,7 +17,7 @@ export default function Sidebar(props) {
 				setSections={setSections}
 			/>
 
-			<nav className="z-30 overscroll-contain bg-bg-primary min-w-[20rem] px-12 pr-16 py-6 overflow-y-scroll fixed h-full left-0 top-[55.375px] bottom-0 border-r border-border text-text-header">
+			<nav className="z-30 overscroll-contain bg-bg-primary min-w-[20rem] w-[20rem] px-12 pt-8 pb-4 overflow-y-scroll fixed h-[calc(100vh-51px)] left-0 top-[51px] bottom-0 border-r border-border text-text-header">
 				<div className="mb-6">
 					<div
 						className="border border-border bg-bg-secondary rounded cursor-pointer transition-colors duration-200 hover:bg-bg-tertiary"
