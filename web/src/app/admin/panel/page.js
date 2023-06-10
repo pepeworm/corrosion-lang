@@ -45,7 +45,7 @@ export default function Home() {
 		const section = sectionSelection;
 		const link = urlFriendlyTitle(title);
 
-		const mdOutput = `# ${title}\n${body}`;
+		const mdOutput = `${section} > [${title}](/docs/${link}/)\n# ${title}\n---\n${body}`;
 
 		fetch("/api/data", {
 			method: "POST",
