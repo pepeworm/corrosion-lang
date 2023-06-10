@@ -53,7 +53,7 @@ export default function Sidebar(props) {
 											<li
 												key={adjLinkIdx}
 												className={`${
-													linkIdx % 2 && linkIdx < titleLinks.length - 1 ? "my-1.5" : ""
+													linkIdx > 0 && linkIdx < titleLinks.length ? "mt-1.5" : ""
 												}`}
 											>
 												<Link
