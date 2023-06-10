@@ -98,7 +98,7 @@ dialog[open] ::-webkit-scrollbar {
 }
 .markdown hr {
   border-bottom: 2px solid rgba(255, 255, 255, 0.0509803922);
-  margin: 1rem 0 0.4rem;
+  margin: 1rem 0;
 }
 .markdown blockquote {
   padding-left: 2rem;
