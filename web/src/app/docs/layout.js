@@ -17,7 +17,6 @@ export default function DocLayout({ children }) {
 
 				for (const header in data) {
 					for (let i = 0; i < data[header].length; i++) {
-						console.log(page + " " + data[header][i][1]);
 						if (data[header][i][1] == page) {
 							data[header][i][2] = true;
 

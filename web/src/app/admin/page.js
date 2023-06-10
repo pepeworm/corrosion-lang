@@ -19,7 +19,7 @@ export default function Home() {
 				const password = e.target[1].value;
 
 				if (username == process.env.USERNAME && password == process.env.PASSWORD) {
-					setCookies("admin_id", process.env.ADMIN_ID, { maxAge: 60 * 60 * 48 });
+					setCookies("admin_id", process.env.ADMIN_ID);
 
 					window.location.href = "/admin/panel";
 				}
@@ -57,6 +57,7 @@ export default function Home() {
 							setPassword(e.target.value);
 						}}
 						required
+						type="password"
 						className="bg-transparent text-text-body px-3 py-1.5 outline-none w-full"
 					/>
 				</div>

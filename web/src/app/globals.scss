@@ -37,6 +37,7 @@ body {
 	background-color: $bg-primary;
 	overflow-x: hidden;
 	padding-top: 51px;
+	scroll-behavior: smooth;
 }
 
 h1 {
@@ -89,6 +90,7 @@ dialog {
 }
 
 .markdown {
+
 	h2,
 	h3,
 	strong {
