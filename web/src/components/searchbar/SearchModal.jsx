@@ -30,9 +30,10 @@ export default function SearchModal(props) {
 	const [allResults, setAllResults] = useState(false);
 	const [searchResults, setSearchResults] = useState(false);
 
-	useEffect(() => {}, [search]);
 	useEffect(() => {
-		fetch("/data/docs.json")
+		fetch("/api/data", {
+			method: "GET"
+		})
 			.then((res) => res.json())
 			.then((text) => {
 				setAllResults(text);

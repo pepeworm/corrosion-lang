@@ -7,29 +7,14 @@ import { getCookie, hasCookie, deleteCookie } from "cookies-next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faCaretDown, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
-function urlFriendlyTitle(rawTitle) {
-	const a = "àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;";
-	const b = "aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------";
-	const p = new RegExp(a.split("").join("|"), "g");
-
-	return rawTitle
-		.toString()
-		.toLowerCase()
-		.replace(/\s+/g, "-")
-		.replace(p, (c) => b.charAt(a.indexOf(c)))
-		.replace(/&/g, "-and-")
-		.replace(/[^\w\-]+/g, "")
-		.replace(/\-\-+/g, "-")
-		.replace(/^-+/, "")
-		.replace(/-+$/, "");
-}
-
 export default function Home() {
 	const [sections, setSections] = useState({});
+	const [newSection, setNewSection] = useState("");
 	const [sectionSelection, setSectionSelection] = useState(null);
 	const [showSectionDropdown, setShowSectionDropdown] = useState(false);
 	const [title, setTitle] = useState("");
 	const [body, setBody] = useState("");
+	const [mdData, setMdData] = useState(null);
 
 	if (!hasCookie("admin_id") || getCookie("admin_id") !== process.env.ADMIN_ID) {
 		window.location.href = "/";
@@ -37,11 +22,53 @@ export default function Home() {
 		return <></>;
 	}
 
+	function urlFriendlyTitle(rawTitle) {
+		const a = "àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;";
+		const b = "aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------";
+		const p = new RegExp(a.split("").join("|"), "g");
+
+		return rawTitle
+			.toString()
+			.toLowerCase()
+			.replace(/\s+/g, "-")
+			.replace(p, (c) => b.charAt(a.indexOf(c)))
+			.replace(/&/g, "-and-")
+			.replace(/[^\w\-]+/g, "")
+			.replace(/\-\-+/g, "-")
+			.replace(/^-+/, "")
+			.replace(/-+$/, "");
+	}
+
+	function handleSubmit(e, updateMd) {
+		e.preventDefault();
+
+		const section = sectionSelection;
+		const link = urlFriendlyTitle(title);
+
+		const mdOutput = `# ${title}\n${body}`;
+
+		fetch("/api/data", {
+			method: "POST",
+			body: JSON.stringify({
+				section: section,
+				link: link,
+				title: title,
+				fileData: mdOutput,
+			}),
+		})
+			.then((res) => res.json())
+			.then((text) => updateMd && setMdData(text));
+
+		return;
+	}
+
 	useEffect(() => {
-		fetch("/data/docs.json")
-			.then((res) => res.text())
+		fetch("/api/data", {
+			method: "GET",
+		})
+			.then((res) => res.json())
 			.then((text) => {
-				setSections(JSON.parse(text));
+				setSections(text);
 			});
 	}, []);
 
@@ -50,17 +77,9 @@ export default function Home() {
 			<form
 				className="flex flex-col justify-center items-center"
 				onSubmit={(e) => {
-					e.preventDefault();
+					handleSubmit(e, false);
 
-					const section = e.target[0].value;
-					const title = e.target[1].value;
-					const body = e.target[2].value;
-					const link = urlFriendlyTitle(title);
-
-					const mdOutput = `# ${title}\n${body}`;
-
-					addDocs()
-						.then((res) => console.log(res));
+					window.location.href = `/docs/${urlFriendlyTitle(title)}`;
 				}}
 			>
 				<h1 className="mb-6">Admin Panel</h1>
@@ -105,9 +124,9 @@ export default function Home() {
 
 									<div className="w-1/2 rounded border border-border px-3 py-1.5 text-text-body flex flex-row justify-center items-center gap-2">
 										<input
-											value={sectionSelection}
+											value={newSection}
 											onChange={(e) => {
-												setSectionSelection(e.target.value);
+												setNewSection(e.target.value);
 											}}
 											type="text"
 											className="w-full outline-none bg-bg-secondary"
@@ -119,6 +138,7 @@ export default function Home() {
 											className="text-text-highlight"
 											onClick={(e) => {
 												setShowSectionDropdown(false);
+												setSectionSelection(newSection);
 											}}
 										/>
 									</div>
@@ -150,6 +170,9 @@ export default function Home() {
 					<Link
 						className="mb-4 w-full flex flex-row justify-between items-center group border border-border rounded px-3 py-1.5"
 						href="/admin/panel/#preview"
+						onClick={(e) => {
+							handleSubmit(e, true);
+						}}
 					>
 						<span className="text-text-body transition-colors duration-200 group-hover:text-text-header">
 							Preview
@@ -184,7 +207,13 @@ export default function Home() {
 				</div>
 			</form>
 
-			<div id="preview"></div>
+			<div id="preview">
+				{mdData && (
+					<div>
+						<p>test</p>
+					</div>
+				)}
+			</div>
 		</section>
 	);
 }

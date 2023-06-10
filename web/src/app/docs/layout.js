@@ -10,11 +10,11 @@ export default function DocLayout({ children }) {
 	const [sidebarLinks, setSidebarLinks] = useState(false);
 
 	useEffect(() => {
-		fetch("/data/docs.json")
-			.then((res) => res.text())
-			.then((text) => {
-				const data = JSON.parse(text);
-
+		fetch("/api/data", {
+			method: "GET",
+		})
+			.then((res) => res.json())
+			.then((data) => {
 				for (const header in data) {
 					for (let i = 0; i < data[header].length; i++) {
 						if (data[header][i][1] == page) {
