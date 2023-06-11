@@ -174,7 +174,9 @@ export default function Home() {
 						className="mb-4 w-full flex flex-row justify-between items-center group border border-border rounded px-3 py-1.5"
 						href="#preview"
 						onClick={(e) => {
-							handleSubmit(e, true);
+							if (title && body) {
+								handleSubmit(e, true);
+							}
 						}}
 					>
 						<span className="text-text-body transition-colors duration-200 group-hover:text-text-header">
@@ -211,11 +213,12 @@ export default function Home() {
 			</form>
 
 			<div id="preview">
+				{mdData && <hr className="my-12 w-4/5 m-auto" />}
 				{mdData && (
-					<div className="w-3/5 m-auto flex flex-col justify-center items-center mt-12">
+					<div className="w-3/5 m-auto flex flex-col justify-center items-center">
 						<h2 className="mb-6">Preview</h2>
 
-						<div className="border border-border rounded py-6 px-8 w-full mb-6">
+						<div className="border border-border rounded py-6 px-8 w-full mb-20">
 							<ReactMarkdown className="markdown" children={mdData} />
 						</div>
 					</div>
