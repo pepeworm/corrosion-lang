@@ -30,6 +30,13 @@ h1 {
   font-weight: 700;
 }
 
+h2 {
+  font-size: 3.75rem;
+  font-weight: 700;
+  line-height: normal;
+  color: rgba(255, 255, 255, 0.9019607843);
+}
+
 p {
   color: rgba(255, 255, 255, 0.6);
 }

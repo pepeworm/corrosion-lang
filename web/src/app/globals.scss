@@ -47,6 +47,13 @@ h1 {
 	font-weight: 700;
 }
 
+h2 {
+	font-size: 3.75rem;
+	font-weight: 700;
+	line-height: normal;
+	color: $text-header
+}
+
 p {
 	color: $text-body;
 }

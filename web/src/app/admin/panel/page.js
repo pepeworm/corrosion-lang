@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import addDocs from "./addDocs";
+import ReactMarkdown from "react-markdown";
 import { getCookie, hasCookie, deleteCookie } from "cookies-next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faCaretDown, faSignOut } from "@fortawesome/free-solid-svg-icons";
@@ -54,10 +54,13 @@ export default function Home() {
 				link: link,
 				title: title,
 				fileData: mdOutput,
+				createNewMdFile: !updateMd,
 			}),
 		})
-			.then((res) => res.json())
-			.then((text) => updateMd && setMdData(text));
+			.then((res) => res.text())
+			.then((text) => {
+				updateMd && setMdData(text);
+			});
 
 		return;
 	}
@@ -169,7 +172,7 @@ export default function Home() {
 
 					<Link
 						className="mb-4 w-full flex flex-row justify-between items-center group border border-border rounded px-3 py-1.5"
-						href="/admin/panel/#preview"
+						href="#preview"
 						onClick={(e) => {
 							handleSubmit(e, true);
 						}}
@@ -209,8 +212,12 @@ export default function Home() {
 
 			<div id="preview">
 				{mdData && (
-					<div>
-						<p>test</p>
+					<div className="w-3/5 m-auto flex flex-col justify-center items-center mt-12">
+						<h2 className="mb-6">Preview</h2>
+
+						<div className="border border-border rounded py-6 px-8 w-full mb-6">
+							<ReactMarkdown className="markdown" children={mdData} />
+						</div>
 					</div>
 				)}
 			</div>
