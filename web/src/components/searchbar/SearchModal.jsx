@@ -51,7 +51,7 @@ export default function SearchModal(props) {
 				<div className="z-[50] fixed left-0 right-0 bottom-0 top-0 bg-transparent" onClick={closeModal} />
 			)}
 			<dialog
-				open={modalState ? true : false}
+				open={modalState}
 				className="z-[60] overscroll-contain fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/5 bg-bg-secondary px-6 py-6 border border-border rounded"
 			>
 				<div className="relative pt-10">

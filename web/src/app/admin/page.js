@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { setCookies } from "cookies-next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
+import Button from "@/components/button/Button.jsx";
+import { setCookie } from "./actions.js";
 
 export default function Home() {
 	const [username, setUsername] = useState("");
@@ -19,9 +20,11 @@ export default function Home() {
 				const password = e.target[1].value;
 
 				if (username == process.env.USERNAME && password == process.env.PASSWORD) {
-					setCookies("admin_id", process.env.ADMIN_ID);
-
-					window.location.href = "/admin/panel";
+					setCookie("admin_id", process.env.ADMIN_ID).then(() => {
+						window.location.href = "/admin/panel";
+					});
+				} else {
+					window.location.href = "/";
 				}
 			}}
 			className="pt-14 flex flex-col justify-center items-center max-w-3/5 m-auto py-4 px-6"
@@ -62,16 +65,12 @@ export default function Home() {
 					/>
 				</div>
 
-				<button
-					className="group border border-border rounded px-3 py-1.5 w-full flex flex-row justify-between items-center"
-					type="submit"
-				>
-					<span className="text-text-body transition-colors duration-200 group-hover:text-text-header">
-						Login
-					</span>
-
-					<FontAwesomeIcon icon={faArrowRight} className="text-text-highlight" />
-				</button>
+				<Button
+					content={<span className="text-bg-primary">Login</span>}
+					bgColor="bg-text-highlight"
+					icon={<FontAwesomeIcon icon={faArrowRight} className="text-bg-primary" />}
+					fullWidth={true}
+				/>
 			</div>
 		</form>
 	);

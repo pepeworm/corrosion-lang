@@ -97,6 +97,10 @@ dialog {
 }
 
 .markdown {
+	&.preview {
+		max-height: 50vh;
+		overflow-y: scroll;
+	}
 
 	h2,
 	h3,
@@ -133,7 +137,7 @@ dialog {
 
 	hr {
 		border-bottom: 2px solid $border;
-		margin: 1rem 0;
+		margin: 1rem 0 1.5rem;
 	}
 
 	blockquote {

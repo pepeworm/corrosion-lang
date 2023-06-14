@@ -52,10 +52,7 @@ export async function POST(request) {
 	}
 
 	writeFileSync(dataPath, JSON.stringify(currData));
+	writeFileSync(getMdxPath(link), fileData);
 
-	if (data.createNewMdFile) {
-		writeFileSync(getMdxPath(link), fileData);
-	}
-
-	return new NextResponse(fileData);
+	return new NextResponse(200);
 }

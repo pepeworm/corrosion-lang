@@ -77,6 +77,10 @@ dialog[open] ::-webkit-scrollbar {
   border: none;
 }
 
+.markdown.preview {
+  max-height: 50vh;
+  overflow-y: scroll;
+}
 .markdown h2,
 .markdown h3,
 .markdown strong {
@@ -105,7 +109,7 @@ dialog[open] ::-webkit-scrollbar {
 }
 .markdown hr {
   border-bottom: 2px solid rgba(255, 255, 255, 0.0509803922);
-  margin: 1rem 0;
+  margin: 1rem 0 1.5rem;
 }
 .markdown blockquote {
   padding-left: 2rem;

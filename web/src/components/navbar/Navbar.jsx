@@ -14,7 +14,7 @@ export default function Navbar() {
 			<nav className="z-40 backdrop-blur-xl px-12 py-2 flex flex-row justify-between border-b items-center border-border text-text-header fixed top-0 right-0 left-0">
 				<div>
 					<Link href="/" className="flex flex-row justify-center items-center gap-[0.05rem]">
-						<Image src="/images/logo.png" width="35" height="35" />
+						<Image src="/images/logo.png" width="35" height="35" alt="Logo" />
 
 						<span className="font-bold text-xl">ORROSION</span>
 					</Link>
@@ -22,12 +22,6 @@ export default function Navbar() {
 
 				<div className="">
 					<ul className="flex flex-row justify-center items-center gap-8">
-						<li>
-							<Link href="/showcase" className="link animate-underline">
-								Showcase
-								<span className="text-underline"></span>
-							</Link>
-						</li>
 						<li>
 							<Link href="/docs/installation" className="link animate-underline">
 								Docs
