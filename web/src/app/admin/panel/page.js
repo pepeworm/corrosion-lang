@@ -8,6 +8,10 @@ import Modal from "@/components/modal/Modal.jsx";
 import Button from "@/components/button/Button.jsx";
 import { getCookie, deleteCookie } from "../actions.js";
 
+// TODO claenup code here
+// TODO delete doc items
+// TODO store draft in localstorage or sth
+
 export default function Home() {
 	const [sections, setSections] = useState({});
 	const [newSection, setNewSection] = useState("");
