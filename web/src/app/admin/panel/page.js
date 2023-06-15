@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faCaretDown, faSignOut, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faCaretDown, faSignOut, faXmark, faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import {} from "@fortawesome/free-regular-svg-icons";
 import Modal from "@/components/modal/Modal.jsx";
 import Button from "@/components/button/Button.jsx";
 import { getCookie, deleteCookie } from "../actions.js";
 
-// TODO claenup code here
 // TODO delete doc items
 // TODO store draft in localstorage or sth
 
@@ -19,7 +19,6 @@ export default function Home() {
 	const [showSectionDropdown, setShowSectionDropdown] = useState(false);
 	const [title, setTitle] = useState("");
 	const [body, setBody] = useState("");
-	const [mdData, setMdData] = useState(null);
 	const [actionTab, setActionTab] = useState("add");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -160,6 +159,7 @@ export default function Home() {
 													onClick={(e) => {
 														setSectionSelection(section);
 														setShowSectionDropdown(false);
+														window.localStorage.setItem("section", section);
 													}}
 												>
 													{section}
@@ -174,7 +174,10 @@ export default function Home() {
 												<input
 													value={newSection}
 													onChange={(e) => {
-														setNewSection(e.target.value);
+														const section = e.target.value;
+
+														setNewSection(section);
+														window.localStorage.setItem("section", section);
 													}}
 													type="text"
 													className="w-full outline-none bg-bg-secondary"
@@ -201,7 +204,10 @@ export default function Home() {
 								required
 								value={title}
 								onChange={(e) => {
-									setTitle(e.target.value);
+									const title = e.target.value;
+
+									setTitle(title);
+									window.localStorage.setItem("title", title);
 								}}
 							/>
 
@@ -211,9 +217,30 @@ export default function Home() {
 								required
 								value={body}
 								onChange={(e) => {
-									setBody(e.target.value);
+									const body = e.target.value;
+
+									setBody(body);
+									window.localStorage.setItem("body", body);
 								}}
 							></textarea>
+
+							{(window.localStorage.getItem("section") ||
+								window.localStorage.getItem("title") ||
+								window.localStorage.getItem("body")) && (
+								<Button
+									onClick={(e) => {
+										e.preventDefault();
+
+										setSectionSelection(window.localStorage.getItem("section"));
+										setTitle(window.localStorage.getItem("title"));
+										setBody(window.localStorage.getItem("body"));
+									}}
+									content={<span className="text-text-body">Restore Draft</span>}
+									icon={<FontAwesomeIcon icon={faRotateRight} className="text-text-body" />}
+									fullWidth={true}
+									margin="mb-4"
+								/>
+							)}
 
 							<Button
 								content={<span className="text-bg-primary">Preview</span>}
