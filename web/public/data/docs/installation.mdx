@@ -1,4 +1,44 @@
 Testing > [installation](/docs/installation/)
-# installation
+# Installation
 ---
-stafataa
+## Compiling
+> ### Download
+> To get started with erosion, first either download the source code for the official compiler [here](https://github.com/sireButItsUnique/erosion-compiler) 
+> on github or choose the version for your device [here](https://github.com/sireButItsUnique/erosion-compiler)
+> (*note the download from the documentation is pre built while the github is raw source code*)
+>
+> ### Build
+> If you downloaded the prebuilt version for your device, you can safely skip this step. Otherwise, run 
+> `make -j`
+> if you have [make](https://www.gnu.org/software/make/) or compile with your C++ compiler of choice. 
+> Here's an example using g++, a part of the [mingw](https://www.mingw-w64.org/downloads/) package:
+> `g++ ./main.cpp -o erosion`
+> 
+> ### Configure
+> Once you have compiler, we need to add it to your path. 
+>
+> - ### Windows:
+>> Navigate to the advanced systems settings window by opening your settings app and searching "advanced system".
+>> Then you should click the "Environment Variables" button on the "Advanced" tab. **DO NOT** touch anything, and simply press "New" 
+>> under system variables. Put `erosion` as the variable name and the path of the compiler build as the variable value. 
+>> Here's a [guide](https://docs.oracle.com/en/database/oracle////machine-learning/oml4r/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html#GUID-DD6F9982-60D5-48F6-8270-A27EC53807D0)
+>> with images if text wasn't clear enough.
+> - ### Linux:  
+>> Navigate to your compiler build, i.e. run `cd ./erosion` once you're in the directory right above the file. Then, run `echo -e '\nPATH="$PATH:'$(pwd)\" >> ~/.bashrc` in your terminal
+>> to permanently add erosion as an environment variable.  
+>  
+> Then, choose your assembler of choice and set it as the default for erosion to use. Note that erosion comes bundled with sedimentation,
+> so `erosion -s ./sedimentation` will always work if you downloaded the source code. If you downloaded the prebuilt version, this is
+> already done for you. To change it to another assembler such as [nasm](https://www.nasm.us/) for x86, run `erosion -s [path]` 
+>
+> ### Compile
+> After setting everything up correctly, run `erosion [file directory]` anywhere to compile your corrosion code. The file should be
+> of a .cor extension in order to compile
+
+&nbsp;
+## Reading output
+> ### Console
+> If you compiled with a configured erosion compiler, it should automatically assemble the assembly code
+> upon compilation. Simply read the output file `./a.out` to read the console output
+> ### Return code
+> To read the exit code of the `main` function, run `echo $?` for linux and `echo %errorlevel%` for windows.

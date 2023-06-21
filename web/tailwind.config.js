@@ -19,7 +19,7 @@ module.exports = {
 				"text-highlight": "#7ad367",
 				"text-header": "#ffffffe6",
 				"text-body": "#ffffff99",
-				"text-dangerous": "#f87171",
+				"text-danger": "#f87171",
 				"bg-primary": "#111d25",
 				"bg-secondary": "#1c2830",
 				"bg-tertiary": "#202c34",

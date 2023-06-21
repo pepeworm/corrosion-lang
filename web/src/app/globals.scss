@@ -7,7 +7,7 @@ $text-highlight: #7ad367;
 $text-header: #ffffffe6;
 $text-body: #ffffff99;
 $text-footer: #98a3b3;
-$text-dangerous: #f87171;
+$text-danger: #f87171;
 $bg-primary: #111d25;
 $bg-secondary: #1c2830;
 $bg-tertiary: #202c34;
@@ -110,7 +110,8 @@ dialog {
 
 	h2,
 	h3 {
-		margin-bottom: 0.7rem;
+		margin-bottom: 0.25rem;
+		margin-top: 0.75rem;
 	}
 
 	h1 {
@@ -125,6 +126,7 @@ dialog {
 	a,
 	p {
 		font-size: 1rem;
+		margin-bottom: 0.25rem;
 	}
 
 	a {
@@ -151,10 +153,27 @@ dialog {
 		border-radius: 0.25rem;
 		padding: 0.75rem 1rem;
 		margin: 1rem 0;
+
+		code {
+			color: $text-highlight;
+		}
 	}
 
 	code {
 		color: $text-highlight;
+		background-color: $bg-secondary;
+		border: 1px solid $border;
+		border-radius: 0.25rem;
+		padding: 0.1rem 0.2rem;
+	}
+
+	ul {
+		list-style-type: square;
+		margin-left: 1.5rem;
+	}
+
+	li {
+		color: $text-body;
 	}
 }
 

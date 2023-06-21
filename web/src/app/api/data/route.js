@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync, writeFileSync, unlinkSync } from "fs";
 import { NextResponse } from "next/server";
 import path from "path";
 
@@ -53,6 +53,21 @@ export async function POST(request) {
 
 	writeFileSync(dataPath, JSON.stringify(currData));
 	writeFileSync(getMdxPath(link), fileData);
+
+	return new NextResponse(200);
+}
+
+export async function PUT(request) {
+	const rawData = await request.json();
+	const delFiles = rawData.delFiles;
+	const data = rawData.data;
+
+	writeFileSync(dataPath, JSON.stringify(data));
+
+	delFiles.map((file) => {
+		unlinkSync(getMdxPath(file));
+	})
+
 
 	return new NextResponse(200);
 }

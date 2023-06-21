@@ -1,34 +1,72 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, createRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faCaretDown, faSignOut, faXmark, faRotateRight } from "@fortawesome/free-solid-svg-icons";
-import {} from "@fortawesome/free-regular-svg-icons";
+import { faArrowRight, faCaretDown, faSignOut, faXmark, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Modal from "@/components/modal/Modal.jsx";
 import Button from "@/components/button/Button.jsx";
 import { getCookie, deleteCookie } from "../actions.js";
 
-// TODO delete doc items
-// TODO store draft in localstorage or sth
-
 export default function Home() {
+	// general
+
+	const [actionTab, setActionTab] = useState("add");
 	const [sections, setSections] = useState({});
+
+	// add tab
+
+	const [showSectionDropdown, setShowSectionDropdown] = useState(false);
 	const [newSection, setNewSection] = useState("");
 	const [sectionSelection, setSectionSelection] = useState(null);
-	const [showSectionDropdown, setShowSectionDropdown] = useState(false);
 	const [title, setTitle] = useState("");
 	const [body, setBody] = useState("");
-	const [actionTab, setActionTab] = useState("add");
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+	// delete tab
+
+	const [delRefs, setDelRefs] = useState({});
+	const [deleteSelection, setDeleteSelection] = useState([]);
 
 	getCookie("admin_id").then((res) => {
-		if (res.value === undefined || res.value !== process.env.ADMIN_ID) {
+		if (res === undefined || res.value !== process.env.ADMIN_ID) {
 			window.location.href = "/";
 
 			return <></>;
 		}
 	});
+
+	useEffect(() => {
+		fetch("/api/data", {
+			method: "GET",
+		})
+			.then((res) => res.json())
+			.then((text) => {
+				setSections(text);
+
+				let temp = {};
+
+				Object.keys(text).map((section, sectionIdx) => {
+					text[section].map((_, itemIdx) => {
+						temp[`${sectionIdx},${itemIdx}`] = createRef();
+					});
+				});
+
+				setDelRefs(temp);
+			});
+	}, []);
+
+	useEffect(() => {
+		const storageSection = window.localStorage.getItem("section");
+		const storageTitle = window.localStorage.getItem("title");
+		const storageBody = window.localStorage.getItem("body");
+
+		if (storageSection || storageTitle || storageBody) {
+			setSectionSelection(storageSection);
+			setTitle(storageTitle);
+			setBody(storageBody);
+		}
+	}, []);
 
 	function urlFriendlyTitle(rawTitle) {
 		const a = "àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;";
@@ -47,15 +85,21 @@ export default function Home() {
 			.replace(/-+$/, "");
 	}
 
-	useEffect(() => {
-		fetch("/api/data", {
-			method: "GET",
-		})
-			.then((res) => res.json())
-			.then((text) => {
-				setSections(text);
-			});
-	}, []);
+	function handleDeleteSelection(target, rawId) {
+		const id = rawId.toString();
+
+		setDeleteSelection((prev) => {
+			if (target.checked) {
+				prev.push(id.toString());
+			} else {
+				prev.splice(prev.indexOf(id.toString()), 1);
+			}
+
+			return prev;
+		});
+
+		return;
+	}
 
 	return (
 		<section className="pt-14">
@@ -75,7 +119,7 @@ export default function Home() {
 
 						<Button
 							onClick={(e) => {
-								setIsModalOpen((prev) => !prev);
+								setIsAddModalOpen((prev) => !prev);
 							}}
 							content={<span className="text-text-body">Cancel</span>}
 							icon={<FontAwesomeIcon icon={faXmark} className="text-text-body" />}
@@ -106,167 +150,332 @@ export default function Home() {
 										}
 									});
 							}}
-							content={<span className="text-bg-secondary">Submit</span>}
+							content={<span className="text-bg-secondary">Confirm</span>}
 							icon={<FontAwesomeIcon icon={faArrowRight} className="text-bg-secondary" />}
 							fullWidth={true}
 							bgColor="bg-text-highlight"
 						/>
 					</div>
 				}
-				isModalOpen={isModalOpen}
-				setIsModalOpen={setIsModalOpen}
+				isModalOpen={isAddModalOpen}
+				setIsModalOpen={setIsAddModalOpen}
 			/>
 
+			<h1 className="text-center w-full">Admin Panel</h1>
+
+			<div className="max-w-[35rem] w-full flex flex-row justify-around items-center m-auto my-8 border-b border-b-border">
+				<h2
+					className={`${
+						actionTab == "add" && "pb-[calc(0.5rem-1px)] gradient border-b border-b-text-highlight"
+					} cursor-pointer text-base font-normal text-text-body pb-2`}
+					onClick={(e) => {
+						setActionTab("add");
+					}}
+				>
+					Add Item
+				</h2>
+				<h2
+					className={`${
+						actionTab == "delete" && "pb-[calc(0.5rem-1px)] gradient border-b border-b-text-highlight"
+					} cursor-pointer text-base font-normal text-text-body pb-2`}
+					onClick={(e) => {
+						setActionTab("delete");
+					}}
+				>
+					Delete Item
+				</h2>
+			</div>
+
 			{actionTab == "add" ? (
-				<div>
-					<form
-						className="flex flex-col justify-center items-center"
-						onSubmit={(e) => {
-							e.preventDefault();
+				<form
+					className="flex flex-col justify-center items-center"
+					onSubmit={(e) => {
+						e.preventDefault();
 
-							setIsModalOpen((prev) => !prev);
-						}}
-					>
-						<h1 className="mb-6">Admin Panel</h1>
+						setIsAddModalOpen((prev) => !prev);
+					}}
+				>
+					<div className="max-w-[35rem] w-full mb-8">
+						<div className="relative mb-4">
+							<div
+								onClick={(e) => setShowSectionDropdown((prev) => !prev)}
+								className="bg-bg-secondary cursor-pointer flex flex-row justify-between items-center text-text-body w-full border border-border rounded px-3 py-1.5"
+							>
+								<span>{sectionSelection ? sectionSelection : "Select Section"}</span>
 
-						<div className="w-[35rem]">
-							<div className="relative mb-4">
-								<div
-									onClick={(e) => setShowSectionDropdown((prev) => !prev)}
-									className="bg-bg-secondary cursor-pointer flex flex-row justify-between items-center text-text-body w-full border border-border rounded px-3 py-1.5"
+								<FontAwesomeIcon
+									icon={faCaretDown}
+									className={`transition-transform duration-200 ${
+										showSectionDropdown && "rotate-180"
+									}`}
+								/>
+							</div>
+
+							{sections && (
+								<ul
+									className={`${
+										showSectionDropdown ? "z-20 opacity-100" : "z-[-1] opacity-0"
+									} transition-opacity duration-200 flex flex-col justify-center items-center absolute left-0 right-0 gap-2 bg-bg-secondary border border-border rounded pt-2 pb-3.5 cursor-pointer drop-shadow-xl`}
 								>
-									<span>{sectionSelection ? sectionSelection : "Select Section"}</span>
+									{Object.keys(sections).map((section, idx) => {
+										return (
+											<li
+												key={idx}
+												className="text-text-body transition-colors duration-200 hover:text-text-header"
+												onClick={(e) => {
+													setSectionSelection(section);
+													setShowSectionDropdown(false);
+												}}
+											>
+												{section}
+											</li>
+										);
+									})}
 
-									<FontAwesomeIcon
-										icon={faCaretDown}
-										className={`transition-transform duration-200 ${
-											showSectionDropdown && "rotate-180"
-										}`}
-									/>
-								</div>
+									<li className="w-full flex flex-row justify-center items-center gap-2">
+										<span className="text-text-body">Other:</span>
 
-								{sections && (
-									<ul
-										className={`${
-											showSectionDropdown ? "z-20 opacity-100" : "z-[-1] opacity-0"
-										} transition-opacity duration-200 flex flex-col justify-center items-center absolute left-0 right-0 gap-2 bg-bg-secondary border border-border rounded pt-2 pb-3.5 cursor-pointer drop-shadow-xl`}
-									>
-										{Object.keys(sections).map((section, idx) => {
-											return (
-												<li
-													key={idx}
-													className="text-text-body transition-colors duration-200 hover:text-text-header"
-													onClick={(e) => {
-														setSectionSelection(section);
-														setShowSectionDropdown(false);
-														window.localStorage.setItem("section", section);
+										<div className="w-1/2 rounded border border-border px-3 py-1.5 text-text-body flex flex-row justify-center items-center gap-2">
+											<input
+												value={newSection}
+												onChange={(e) => {
+													const section = e.target.value;
+
+													setNewSection(section);
+												}}
+												type="text"
+												className="w-full outline-none bg-bg-secondary"
+												placeholder="Section Name"
+											/>
+
+											<FontAwesomeIcon
+												icon={faArrowRight}
+												className="text-text-highlight"
+												onClick={(e) => {
+													setShowSectionDropdown(false);
+													setSectionSelection(newSection);
+												}}
+											/>
+										</div>
+									</li>
+								</ul>
+							)}
+						</div>
+
+						<input
+							className="w-full py-1.5 px-3 border border-border rounded outline-none bg-bg-secondary text-text-body mb-4"
+							placeholder="Title"
+							required
+							value={title}
+							onChange={(e) => {
+								const title = e.target.value;
+
+								setTitle(title);
+							}}
+						/>
+
+						<textarea
+							className="mb-4 w-full block h-24 outline-none border border-border rounded bg-bg-secondary text-text-body py-1.5 px-3"
+							placeholder="Body"
+							required
+							value={body}
+							onChange={(e) => {
+								const body = e.target.value;
+
+								setBody(body);
+							}}
+						></textarea>
+
+						<Button
+							onClick={(e) => {
+								e.preventDefault();
+
+								window.localStorage.setItem("section", sectionSelection);
+								window.localStorage.setItem("title", title);
+								window.localStorage.setItem("body", body);
+							}}
+							content={<span className="text-text-body">Save Draft</span>}
+							icon={<FontAwesomeIcon icon={faDownload} className="text-text-body" />}
+							fullWidth={true}
+							margin="mb-4"
+						/>
+
+						<Button
+							content={<span className="text-bg-primary">Preview</span>}
+							icon={<FontAwesomeIcon icon={faArrowRight} className="text-bg-primary" />}
+							fullWidth={true}
+							bgColor="bg-text-highlight"
+							margin="mb-4"
+						/>
+
+						<Button
+							onClick={(e) => {
+								e.preventDefault();
+
+								deleteCookie("admin_id").then(() => {
+									window.location.href = "/";
+								});
+							}}
+							content={<span className="text-bg-primary">Logout</span>}
+							icon={<FontAwesomeIcon icon={faSignOut} className="text-bg-primary" />}
+							fullWidth={true}
+							bgColor="bg-text-danger"
+						/>
+					</div>
+				</form>
+			) : (
+				<form
+					className="flex flex-col justify-center items-center"
+					onSubmit={(e) => {
+						e.preventDefault();
+
+						setIsDeleteModalOpen((prev) => !prev);
+					}}
+				>
+					<div className="max-w-[35rem] w-full mb-8">
+						<div className="relative mb-4 bg-bg-secondary border border-border rounded text-text-body px-4 py-3">
+							{Object.keys(delRefs).length &&
+								Object.keys(sections).map((section, sectionIdx) => {
+									return (
+										<div className={`${sectionIdx > 0 && "mt-4"}`} key={sectionIdx}>
+											<div className="flex flex-row justify-start items-center gap-1 cursor-pointer">
+												<input
+													type="checkbox"
+													id={sectionIdx}
+													name={sectionIdx}
+													className="cursor-pointer mt-[-0.05rem] outline-none"
+													onChange={(e) => {
+														handleDeleteSelection(e.target, sectionIdx);
+
+														for (let i = 0; i < sections[section].length; i++) {
+															const adjIdx = `${sectionIdx},${i}`;
+
+															if (e.target.checked) {
+																if (!delRefs[adjIdx].current.checked) {
+																	delRefs[adjIdx].current.checked = true;
+
+																	handleDeleteSelection(
+																		delRefs[adjIdx].current,
+																		adjIdx
+																	);
+																}
+															} else {
+																delRefs[adjIdx].current.checked = false;
+
+																handleDeleteSelection(delRefs[adjIdx].current, adjIdx);
+															}
+														}
 													}}
+												/>
+												<label
+													htmlFor={sectionIdx}
+													className="cursor-pointer text-md font-bold select-none"
 												>
 													{section}
-												</li>
-											);
-										})}
-
-										<li className="w-full flex flex-row justify-center items-center gap-2">
-											<span className="text-text-body">Other:</span>
-
-											<div className="w-1/2 rounded border border-border px-3 py-1.5 text-text-body flex flex-row justify-center items-center gap-2">
-												<input
-													value={newSection}
-													onChange={(e) => {
-														const section = e.target.value;
-
-														setNewSection(section);
-														window.localStorage.setItem("section", section);
-													}}
-													type="text"
-													className="w-full outline-none bg-bg-secondary"
-													placeholder="Section Name"
-												/>
-
-												<FontAwesomeIcon
-													icon={faArrowRight}
-													className="text-text-highlight"
-													onClick={(e) => {
-														setShowSectionDropdown(false);
-														setSectionSelection(newSection);
-													}}
-												/>
+												</label>
 											</div>
-										</li>
-									</ul>
-								)}
-							</div>
 
-							<input
-								className="w-full py-1.5 px-3 border border-border rounded outline-none bg-bg-secondary text-text-body mb-4"
-								placeholder="Title"
-								required
-								value={title}
-								onChange={(e) => {
-									const title = e.target.value;
+											<div className="ml-10">
+												{sections[section].map((item, itemIdx) => {
+													const adjIdx = `${sectionIdx},${itemIdx}`;
 
-									setTitle(title);
-									window.localStorage.setItem("title", title);
-								}}
-							/>
+													return (
+														<div
+															className="flex flex-row justify-start items-center gap-1 cursor-pointer mt-1"
+															key={adjIdx}
+														>
+															<input
+																type="checkbox"
+																id={adjIdx}
+																name={adjIdx}
+																className="cursor-pointer mt-[-0.05rem] outline-none"
+																onChange={(e) => {
+																	const parent = adjIdx.split(",")[0];
 
-							<textarea
-								className="mb-4 w-full block h-24 outline-none border border-border rounded bg-bg-secondary text-text-body py-1.5 px-3"
-								placeholder="Body"
-								required
-								value={body}
-								onChange={(e) => {
-									const body = e.target.value;
-
-									setBody(body);
-									window.localStorage.setItem("body", body);
-								}}
-							></textarea>
-
-							{(window.localStorage.getItem("section") ||
-								window.localStorage.getItem("title") ||
-								window.localStorage.getItem("body")) && (
-								<Button
-									onClick={(e) => {
-										e.preventDefault();
-
-										setSectionSelection(window.localStorage.getItem("section"));
-										setTitle(window.localStorage.getItem("title"));
-										setBody(window.localStorage.getItem("body"));
-									}}
-									content={<span className="text-text-body">Restore Draft</span>}
-									icon={<FontAwesomeIcon icon={faRotateRight} className="text-text-body" />}
-									fullWidth={true}
-									margin="mb-4"
-								/>
-							)}
-
-							<Button
-								content={<span className="text-bg-primary">Preview</span>}
-								icon={<FontAwesomeIcon icon={faArrowRight} className="text-bg-primary" />}
-								fullWidth={true}
-								bgColor="bg-text-highlight"
-								margin="mb-4"
-							/>
-
-							<div
-								className="cursor-pointer mb-4 w-full flex flex-row justify-between items-center border border-border rounded px-3 py-1.5 bg-text-dangerous"
-								onClick={(e) => {
-									deleteCookie("admin_id").then(() => {
-										window.location.href = "/";
-									});
-								}}
-							>
-								<span className="text-bg-primary">Logout</span>
-
-								<FontAwesomeIcon icon={faSignOut} className="text-bg-primary" />
-							</div>
+																	if (deleteSelection.indexOf(parent) === -1) {
+																		handleDeleteSelection(e.target, adjIdx);
+																	} else {
+																		e.target.checked = true;
+																	}
+																}}
+																ref={delRefs[adjIdx]}
+															/>
+															<label
+																htmlFor={adjIdx}
+																className="cursor-pointer text-md select-none"
+															>
+																{item[0]}
+															</label>
+														</div>
+													);
+												})}
+											</div>
+										</div>
+									);
+								})}
 						</div>
-					</form>
-				</div>
-			) : (
-				<form></form>
+
+						<Button
+							onClick={(e) => {
+								e.preventDefault();
+
+								const delFiles = [];
+
+								deleteSelection.map((item) => {
+									if (item.includes(",")) {
+										const pIdx = parseInt(item.split(",")[0]);
+										const parent = sections[Object.keys(sections)[pIdx]];
+										const cIdx = parseInt(item.split(",")[1]);
+
+										delFiles.push(urlFriendlyTitle(parent[cIdx][0]));
+										parent.splice(cIdx, 1);
+									}
+								});
+
+								deleteSelection.map((item) => {
+									if (!item.includes(",")) {
+										const idx = parseInt(item);
+
+										delete sections[Object.keys(sections)[idx]];
+									}
+								});
+
+								fetch("/api/data", {
+									method: "PUT",
+									body: JSON.stringify({
+										delFiles: delFiles,
+										data: {sections}
+									}),
+								})
+									.then((res) => res.status)
+									.then((status) => {
+										if (status === 200) {
+											window.location.href = "/docs/installation";
+										}
+									});
+							}}
+							content={<span className="text-bg-primary">Confirm</span>}
+							icon={<FontAwesomeIcon icon={faArrowRight} className="text-bg-primary" />}
+							fullWidth={true}
+							bgColor="bg-text-highlight"
+							margin="mb-4"
+						/>
+
+						<Button
+							onClick={(e) => {
+								e.preventDefault();
+
+								deleteCookie("admin_id").then(() => {
+									window.location.href = "/";
+								});
+							}}
+							content={<span className="text-bg-primary">Logout</span>}
+							icon={<FontAwesomeIcon icon={faSignOut} className="text-bg-primary" />}
+							fullWidth={true}
+							bgColor="bg-text-danger"
+						/>
+					</div>
+				</form>
 			)}
 		</section>
 	);

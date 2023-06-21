@@ -32,7 +32,7 @@ export default function SearchModal(props) {
 
 	useEffect(() => {
 		fetch("/api/data", {
-			method: "GET"
+			method: "GET",
 		})
 			.then((res) => res.json())
 			.then((text) => {
@@ -57,7 +57,7 @@ export default function SearchModal(props) {
 				<div className="relative pt-10">
 					<FontAwesomeIcon
 						icon={faXmark}
-						className="text-xl absolute top-0 right-0 cursor-pointer text-text-dangerous"
+						className="text-xl absolute top-0 right-0 cursor-pointer text-text-danger"
 						onClick={(e) => {
 							closeModal();
 						}}
