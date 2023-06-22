@@ -8,20 +8,31 @@ function getMdxPath(fileName) {
 	return path.join(process.cwd(), `public/data/docs/${fileName}.mdx`);
 }
 
-function getData() {
-	const data = readFileSync(dataPath, { encoding: "utf-8" });
+function urlFriendlyTitle(rawTitle) {
+	const a = "àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;";
+	const b = "aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------";
+	const p = new RegExp(a.split("").join("|"), "g");
 
-	return data;
+	return rawTitle
+		.toString()
+		.toLowerCase()
+		.replace(/\s+/g, "-")
+		.replace(p, (c) => b.charAt(a.indexOf(c)))
+		.replace(/&/g, "-and-")
+		.replace(/[^\w\-]+/g, "")
+		.replace(/\-\-+/g, "-")
+		.replace(/^-+/, "")
+		.replace(/-+$/, "");
 }
 
 export async function GET() {
-	const data = getData();
+	const data = readFileSync(dataPath, { encoding: "utf-8" });
 
 	return new Response(data);
 }
 
 export async function POST(request) {
-	let rawData = getData();
+	let rawData = readFileSync(dataPath, { encoding: "utf-8" });
 	let currData = JSON.parse(rawData);
 
 	const data = await request.json();
@@ -58,16 +69,48 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-	const rawData = await request.json();
-	const delFiles = rawData.delFiles;
-	const data = rawData.data;
+	let sections = JSON.parse(readFileSync(dataPath, { encoding: "utf-8" }));
 
-	writeFileSync(dataPath, JSON.stringify(data));
+	const data = await request.json();
+	const del = data.del;
 
+	const delFiles = [];
+
+	// sort del in a descending order
+
+	for (let i = 0; i < del.length; i++) {
+		for (let j = 0; j < del.length - i - 1; j++) {
+			if (del[j] < del[j + 1]) {
+				const tmp = del[j];
+				del[j] = del[j + 1];
+				del[j + 1] = tmp;
+			}
+		}
+	}
+
+	del.forEach((item) => {
+		if (item.includes(",")) {
+			const pIdx = parseInt(item.split(",")[0]);
+			const cIdx = parseInt(item.split(",")[1]);
+
+			delFiles.push(urlFriendlyTitle(sections[Object.keys(sections)[pIdx]][cIdx][0]));
+			sections[Object.keys(sections)[pIdx]].splice(cIdx, 1);
+		}
+	});
+
+	del.forEach((item) => {
+		if (!item.includes(",")) {
+			const idx = parseInt(item);
+
+			delete sections[Object.keys(sections)[idx]];
+		}
+	});
+	
 	delFiles.map((file) => {
 		unlinkSync(getMdxPath(file));
-	})
-
+	});
+	
+	writeFileSync(dataPath, JSON.stringify(sections));
 
 	return new NextResponse(200);
 }

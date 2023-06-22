@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import Sidebar from "@/components/sidebar/Sidebar.jsx";
 
 export default function DocLayout({ children }) {
@@ -40,7 +41,15 @@ export default function DocLayout({ children }) {
 					)}
 				</section>
 
-				<section className="relative">{children}</section>
+				<section className="relative">
+					<Image
+						className="absolute blur-3xl right-0 top-[5rem] z-40"
+						src="/images/logo_blur.png"
+						width="50"
+						height="50"
+					/>
+					{children}
+				</section>
 			</div>
 		</main>
 	);

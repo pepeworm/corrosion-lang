@@ -329,7 +329,18 @@ export default function Home() {
 					onSubmit={(e) => {
 						e.preventDefault();
 
-						setIsDeleteModalOpen((prev) => !prev);
+						fetch("/api/data", {
+							method: "PUT",
+							body: JSON.stringify({
+								del: deleteSelection,
+							}),
+						})
+							.then((res) => res.status)
+							.then((status) => {
+								if (status === 200) {
+									window.location.href = "/docs/installation";
+								}
+							});
 					}}
 				>
 					<div className="max-w-[35rem] w-full mb-8">
@@ -416,44 +427,6 @@ export default function Home() {
 						</div>
 
 						<Button
-							onClick={(e) => {
-								e.preventDefault();
-
-								const delFiles = [];
-
-								deleteSelection.map((item) => {
-									if (item.includes(",")) {
-										const pIdx = parseInt(item.split(",")[0]);
-										const parent = sections[Object.keys(sections)[pIdx]];
-										const cIdx = parseInt(item.split(",")[1]);
-
-										delFiles.push(urlFriendlyTitle(parent[cIdx][0]));
-										parent.splice(cIdx, 1);
-									}
-								});
-
-								deleteSelection.map((item) => {
-									if (!item.includes(",")) {
-										const idx = parseInt(item);
-
-										delete sections[Object.keys(sections)[idx]];
-									}
-								});
-
-								fetch("/api/data", {
-									method: "PUT",
-									body: JSON.stringify({
-										delFiles: delFiles,
-										data: {sections}
-									}),
-								})
-									.then((res) => res.status)
-									.then((status) => {
-										if (status === 200) {
-											window.location.href = "/docs/installation";
-										}
-									});
-							}}
 							content={<span className="text-bg-primary">Confirm</span>}
 							icon={<FontAwesomeIcon icon={faArrowRight} className="text-bg-primary" />}
 							fullWidth={true}
