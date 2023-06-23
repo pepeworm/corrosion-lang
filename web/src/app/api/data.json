@@ -37,6 +37,7 @@
 	"Last": [
 		["doc ", "/doc22", false],
 		["doc XIV", "/doc23", false],
-		["doc XV", "/doc24", false]
+		["doc XV", "/doc24", false],
+		["Another Test", "/another-test", false]
 	]
 }

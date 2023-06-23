@@ -14,8 +14,10 @@ export default function Home() {
 	const [actionTab, setActionTab] = useState("add");
 	const [sections, setSections] = useState({});
 
-	// add tab
+	// add/edit tab
 
+	const [showFileDropdown, setShowFileDropdown] = useState(false);
+	const [fileSelection, setFileSelection] = useState("");
 	const [showSectionDropdown, setShowSectionDropdown] = useState(false);
 	const [newSection, setNewSection] = useState("");
 	const [sectionSelection, setSectionSelection] = useState(null);
@@ -172,7 +174,7 @@ export default function Home() {
 						setActionTab("add");
 					}}
 				>
-					Add Item
+					Add/Edit Item
 				</h2>
 				<h2
 					className={`${
@@ -198,7 +200,73 @@ export default function Home() {
 					<div className="max-w-[35rem] w-full mb-8">
 						<div className="relative mb-4">
 							<div
-								onClick={(e) => setShowSectionDropdown((prev) => !prev)}
+								onClick={(e) => {
+									setShowSectionDropdown(false);
+									setShowFileDropdown((prev) => !prev);
+								}}
+								className="bg-bg-secondary cursor-pointer flex flex-row justify-between items-center text-text-body w-full border border-border rounded px-3 py-1.5"
+							>
+								<span>{fileSelection ? fileSelection : "Edit MDX File"}</span>
+
+								<FontAwesomeIcon
+									icon={faCaretDown}
+									className={`transition-transform duration-200 ${showFileDropdown && "rotate-180"}`}
+								/>
+							</div>
+
+							{sections && (
+								<div
+									className={`${
+										showFileDropdown ? "z-20 opacity-100" : "z-[-1] opacity-0"
+									} max-h-[40vh] overscroll-contain overflow-y-scroll transition-opacity duration-200 text-center absolute left-0 right-0 bg-bg-secondary border border-border rounded py-2 px-3 cursor-pointer drop-shadow-xl`}
+								>
+									{Object.keys(sections).map((section, sectionIdx) => {
+										return (
+											<div key={sectionIdx} className={`${sectionIdx && "mt-2"}`}>
+												<span className="text-text-body font-bold">{section}</span>
+
+												<div>
+													{sections[section].map((item, itemIdx) => {
+														return (
+															<span
+																key={`${sectionIdx},${itemIdx}`}
+																className="block text-text-body transition-colors duration-200 hover:text-text-header"
+																onClick={(e) => {
+																	setFileSelection(item[0]);
+																	setShowFileDropdown(false);
+
+																	fetch("/api/fetchMdx", {
+																		method: "POST",
+																		body: JSON.stringify({
+																			file: urlFriendlyTitle(item[0]),
+																		}),
+																	})
+																		.then((res) => res.json())
+																		.then((data) => {
+																			setSectionSelection(section);
+																			setTitle(item[0]);
+																			setBody(data.body);
+																		});
+																}}
+															>
+																{item[0]}
+															</span>
+														);
+													})}
+												</div>
+											</div>
+										);
+									})}
+								</div>
+							)}
+						</div>
+
+						<div className="relative mb-4">
+							<div
+								onClick={(e) => {
+									setShowFileDropdown(false);
+									setShowSectionDropdown((prev) => !prev);
+								}}
 								className="bg-bg-secondary cursor-pointer flex flex-row justify-between items-center text-text-body w-full border border-border rounded px-3 py-1.5"
 							>
 								<span>{sectionSelection ? sectionSelection : "Select Section"}</span>
@@ -266,8 +334,7 @@ export default function Home() {
 							className="w-full py-1.5 px-3 border border-border rounded outline-none bg-bg-secondary text-text-body mb-4"
 							placeholder="Title"
 							required
-							value={title}
-							onChange={(e) => {
+							onBlur={(e) => {
 								const title = e.target.value;
 
 								setTitle(title);
@@ -278,8 +345,7 @@ export default function Home() {
 							className="mb-4 w-full block h-24 outline-none border border-border rounded bg-bg-secondary text-text-body py-1.5 px-3"
 							placeholder="Body"
 							required
-							value={body}
-							onChange={(e) => {
+							onBlur={(e) => {
 								const body = e.target.value;
 
 								setBody(body);

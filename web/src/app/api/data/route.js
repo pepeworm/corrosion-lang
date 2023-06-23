@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, unlinkSync } from "fs";
+import { readFileSync, writeFileSync, unlinkSync, existsSync } from "fs";
 import { NextResponse } from "next/server";
 import path from "path";
 
@@ -61,8 +61,11 @@ export async function POST(request) {
 		rawData = start;
 		currData = JSON.parse(rawData);
 	}
+	
+	if (!existsSync(getMdxPath(link))) {
+		writeFileSync(dataPath, JSON.stringify(currData));
+	}
 
-	writeFileSync(dataPath, JSON.stringify(currData));
 	writeFileSync(getMdxPath(link), fileData);
 
 	return new NextResponse(200);
@@ -105,11 +108,11 @@ export async function PUT(request) {
 			delete sections[Object.keys(sections)[idx]];
 		}
 	});
-	
+
 	delFiles.map((file) => {
 		unlinkSync(getMdxPath(file));
 	});
-	
+
 	writeFileSync(dataPath, JSON.stringify(sections));
 
 	return new NextResponse(200);
