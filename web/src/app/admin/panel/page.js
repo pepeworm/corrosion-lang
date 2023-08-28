@@ -334,7 +334,8 @@ export default function Home() {
 							className="w-full py-1.5 px-3 border border-border rounded outline-none bg-bg-secondary text-text-body mb-4"
 							placeholder="Title"
 							required
-							onBlur={(e) => {
+							value	={title}
+							onChange={(e) => {
 								const title = e.target.value;
 
 								setTitle(title);
@@ -345,7 +346,8 @@ export default function Home() {
 							className="mb-4 w-full block h-24 outline-none border border-border rounded bg-bg-secondary text-text-body py-1.5 px-3"
 							placeholder="Body"
 							required
-							onBlur={(e) => {
+							value={body}
+							onChange={(e) => {
 								const body = e.target.value;
 
 								setBody(body);
